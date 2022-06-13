@@ -24,14 +24,29 @@
 			margin-bottom: 20px;
 		}
 		.chats{
-			background-color: #000;
-			width: 500px;
+			background-color: #ADD8E6;
+			width: 400px;
 			height: 500px;
 			overflow: auto;
 		}
-		.chats p{
-			color: #fff;
-			text-align: left;
+		.chats .me{
+		    background-color:#FFE400;
+		    color:#000000;
+            text-align:center;
+            display: inline-block;
+            float : right;
+            margin: 20px;
+            padding: 10px;
+
+		}
+		.chats .others{
+		    background-color:#F6F6F6;
+		    color:#000000;
+		    text-align:center;
+		    display: inline-block;
+		    margin: 20px;
+            padding: 10px;
+
 		}
 		input{
 			width: 330px;
@@ -59,7 +74,21 @@
 		ws.onmessage = function(data) {
 			var msg = data.data;
 			if(msg != null && msg.trim() != ''){
-				$("#chats").append("<p>" + msg + "</p>");
+			    var d = JSON.parse(msg);
+			    if(d.type == "getId"){
+			        var si = d.sessionId != null ? d.sessionId:"";
+			        if(si!=''){
+			            $("#sessionId").val(si);
+			        }
+			    }else if(d.type == "message"){
+			        if(d.sessionId == $("#sessionId").val()){
+			            $("#chats").append("<p class='me'>나 : " + d.msg + "</p><br>");
+			        }else{
+			            $("#chats").append("<p class ='others'>" + d.userName+" :"+d.msg+"</p><br>");
+			        }
+			    }else{
+			        console.warn("unknown type!")
+			    }
 			}
 		}
 
@@ -83,15 +112,20 @@
 	}
 
 	function send() {
-		var uN = $("#userName").val();
-		var msg = $("#chatting").val();
-		ws.send(uN+" : "+msg);
+	    var option={
+	        type:"message",
+	        sessionId:$("#sessionId").val(),
+	        userName:$("#userName").val(),
+	        msg:$("#chatting").val()
+	    }
+		ws.send(JSON.stringify(option))
 		$('#chatting').val("");
 	}
 </script>
 <body>
 	<div id="container" class="container">
 		<h1>채팅</h1>
+		<input type = "hidden" id="sessionId" value="">
 		<div id="chats" class="chats">
 		</div>
 
