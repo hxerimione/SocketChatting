@@ -30,27 +30,29 @@
 			overflow: auto;
 		}
 		.chats .me{
-		    background-color:#FFE400;
+		    background-color:pink;
 		    color:#000000;
             text-align:center;
-            display: inline-block;
+            display : inline-block;
             float : right;
-            margin: 20px;
-            padding: 10px;
-
+            clear : both;
+            margin : 10px;
+            padding : 10px;
 		}
 		.chats .others{
 		    background-color:#F6F6F6;
 		    color:#000000;
 		    text-align:center;
 		    display: inline-block;
-		    margin: 20px;
-            padding: 10px;
-
+		    float : left;
+		    clear : both;
+		    margin : 10px;
+		    padding : 10px;
 		}
 		input{
 			width: 330px;
 			height: 25px;
+
 		}
 		#yourMsg{
 			display: none;
@@ -82,9 +84,11 @@
 			        }
 			    }else if(d.type == "message"){
 			        if(d.sessionId == $("#sessionId").val()){
-			            $("#chats").append("<p class='me'>나 : " + d.msg + "</p><br>");
+			            $("#chats").append("<p class='me'>나 : " + d.msg + "</p></br>");
+
 			        }else{
-			            $("#chats").append("<p class ='others'>" + d.userName+" :"+d.msg+"</p><br>");
+			            $("#chats").append("<p class ='others'>" + d.userName+" :"+d.msg+"</p></br>");
+
 			        }
 			    }else{
 			        console.warn("unknown type!")
