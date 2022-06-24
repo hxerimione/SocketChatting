@@ -5,7 +5,7 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <meta charset="UTF-8">
-	<title>Chatting</title>
+	<title>채팅방</title>
 	<style>
 		*{
 			margin:0;
@@ -24,35 +24,35 @@
 			margin-bottom: 20px;
 		}
 		.chats{
-			background-color: #ADD8E6;
-			width: 400px;
+			background-color: #000;
+			width: 500px;
 			height: 500px;
 			overflow: auto;
 		}
 		.chats .me{
-		    background-color:pink;
-		    color:#000000;
+            background-color:pink;
+            color:#000000;
+                  text-align:center;
+                  display : inline-block;
+                  float : right;
+                  clear : both;
+                  margin : 10px;
+                  padding : 10px;
+        }
+        .chats .others{
+            background-color:#F6F6F6;
+            color:#000000;
             text-align:center;
-            display : inline-block;
-            float : right;
+            display: inline-block;
+            float : left;
             clear : both;
             margin : 10px;
             padding : 10px;
-		}
-		.chats .others{
-		    background-color:#F6F6F6;
-		    color:#000000;
-		    text-align:center;
-		    display: inline-block;
-		    float : left;
-		    clear : both;
-		    margin : 10px;
-		    padding : 10px;
-		}
+        }
+
 		input{
 			width: 330px;
 			height: 25px;
-
 		}
 		#yourMsg{
 			display: none;
@@ -64,35 +64,36 @@
 	var ws;
 
 	function wsOpen(){
-		ws = new WebSocket("ws://" + location.host + "/chatting");
+		//웹소켓 전송시 현재 방의 번호를 넘겨서 보낸다.
+		ws = new WebSocket("ws://" + location.host + "/chats/"+$("#roomNumber").val());
 		wsEvt();
 	}
 
 	function wsEvt() {
 		ws.onopen = function(data){
-			//소켓이 열리면 초기화 세팅하기
+			//소켓이 열리면 동작
 		}
 
 		ws.onmessage = function(data) {
+			//메시지를 받으면 동작
 			var msg = data.data;
 			if(msg != null && msg.trim() != ''){
-			    var d = JSON.parse(msg);
-			    if(d.type == "getId"){
-			        var si = d.sessionId != null ? d.sessionId:"";
-			        if(si!=''){
-			            $("#sessionId").val(si);
-			        }
-			    }else if(d.type == "message"){
-			        if(d.sessionId == $("#sessionId").val()){
-			            $("#chats").append("<p class='me'>나 : " + d.msg + "</p></br>");
+				var d = JSON.parse(msg);
+				if(d.type == "getId"){
+					var si = d.sessionId != null ? d.sessionId : "";
+					if(si != ''){
+						$("#sessionId").val(si);
+					}
+				}else if(d.type == "message"){
+					if(d.sessionId == $("#sessionId").val()){
+						$("#chats").append("<p class='me'>나 :" + d.msg + "</p></br>");
+					}else{
+						$("#chats").append("<p class='others'>" + d.userName + " :" + d.msg + "</p></br>");
+					}
 
-			        }else{
-			            $("#chats").append("<p class ='others'>" + d.userName+" :"+d.msg+"</p></br>");
-
-			        }
-			    }else{
-			        console.warn("unknown type!")
-			    }
+				}else{
+					console.warn("unknown type!")
+				}
 			}
 		}
 
@@ -116,20 +117,23 @@
 	}
 
 	function send() {
-	    var option={
-	        type:"message",
-	        sessionId:$("#sessionId").val(),
-	        userName:$("#userName").val(),
-	        msg:$("#chatting").val()
-	    }
+		var option ={
+			type: "message",
+			roomNumber: $("#roomNumber").val(),
+			sessionId : $("#sessionId").val(),
+			userName : $("#userName").val(),
+			msg : $("#chatting").val()
+		}
 		ws.send(JSON.stringify(option))
 		$('#chatting').val("");
 	}
 </script>
 <body>
 	<div id="container" class="container">
-		<h1>채팅</h1>
-		<input type = "hidden" id="sessionId" value="">
+		<h1>${roomName}의 채팅방</h1>
+		<input type="hidden" id="sessionId" value="">
+		<input type="hidden" id="roomNumber" value="${roomNumber}">
+
 		<div id="chats" class="chats">
 		</div>
 
@@ -154,3 +158,4 @@
 	</div>
 </body>
 </html>
+

@@ -16,15 +16,15 @@ public class Room {
         return roomName;
     }
 
-    public void setRoomName(String roonName) {
-        this.roomName = roonName;
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     @Override
     public String toString() {
         return "Room{" +
                 "roomNumber=" + roomNumber +
-                ", roonName='" + roomName + '\'' +
+                ", roomName='" + roomName + '\'' +
                 '}';
     }
 }
