@@ -23,6 +23,12 @@ public class MainController {
         return mv;
     }
 
+    @RequestMapping("/fansRoom")
+    public ModelAndView fansRoom(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("fansRoom");
+        return mv;
+    }
     @RequestMapping("/room")
     public ModelAndView room(){
         ModelAndView mv = new ModelAndView();
@@ -48,7 +54,7 @@ public class MainController {
     }
 
     @RequestMapping("/moveChatting")
-    public ModelAndView chatting(@RequestParam HashMap<Object, Object> params) {
+    public ModelAndView starChatting(@RequestParam HashMap<Object, Object> params) {
         ModelAndView mv = new ModelAndView();
         int roomNumber = Integer.parseInt((String) params.get("roomNumber"));
 
@@ -57,7 +63,24 @@ public class MainController {
             mv.addObject("roomName", params.get("roomName"));
             mv.addObject("roomNumber", params.get("roomNumber"));
             mv.setViewName("chat");
-        }else {
+        }
+        else {
+            mv.setViewName("room");
+        }
+        return mv;
+    }
+    @RequestMapping("/adminChatting")
+    public ModelAndView fansChatting(@RequestParam HashMap<Object, Object> params) {
+        ModelAndView mv = new ModelAndView();
+        int roomNumber = Integer.parseInt((String) params.get("roomNumber"));
+
+        List<Room> new_list = roomList.stream().filter(o->o.getRoomNumber()==roomNumber).collect(Collectors.toList());
+        if(new_list != null && new_list.size() > 0) {
+            mv.addObject("roomName", params.get("roomName"));
+            mv.addObject("roomNumber", params.get("roomNumber"));
+            mv.setViewName("star");
+        }
+        else {
             mv.setViewName("room");
         }
         return mv;

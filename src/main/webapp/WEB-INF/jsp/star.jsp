@@ -86,11 +86,9 @@
 					}
 				}else if(d.type == "message"){
 					if(d.sessionId == $("#sessionId").val()){
-						$("#chats").append("<p class='me'>" + d.msg + "</p></br>");
-					}else if (d.starKey !=null){
-						$("#chats").append("<p class='star'>" + d.userName + " :" + d.msg + "</p></br>");
+						$("#chats").append("<p class='me'>" + d.userName + ":" + d.msg + "</p></br>");
 					}else{
-
+						$("#chats").append("<p class='star'>" + d.userName + " :" + d.msg + "</p></br>");
 					}
 
 				}else{
@@ -122,9 +120,10 @@
 		var option ={
 			type: "message",
 			roomNumber: $("#roomNumber").val(),
-			sessionId : $("#sessionId").val(), //보내는 사람의 세션 아이디
+			sessionId : $("#sessionId").val(),
 			userName : $("#userName").val(),
-			msg : $("#chatting").val()
+			msg : $("#chatting").val(),
+			starKey : $("#starKey").val()
 		}
 		ws.send(JSON.stringify(option))
 		$('#chatting').val("");
@@ -135,6 +134,7 @@
 		<h1>${roomName}의 채팅방</h1>
 		<input type="hidden" id="sessionId" value="">
 		<input type="hidden" id="roomNumber" value="${roomNumber}">
+		<input type="hidden" id="starKey" value = "${roomNumber}+key">
 
 		<div id="chats" class="chats">
 		</div>
