@@ -19,8 +19,8 @@
 		.container h1{
 			text-align: left;
 			padding: 5px 5px 5px 15px;
-			color: #FFBB00;
-			border-left: 3px solid #FFBB00;
+			color: #fa7a8b;
+			border-left: 3px solid #fa7a8b;
 			margin-bottom: 20px;
 		}
 		.roomContainer{
@@ -99,7 +99,7 @@
 	}
 
 	function goRoom(number, name){
-		location.href="/adminChatting?roomName="+name+"&"+"roomNumber="+number;
+		location.href="/moveChatting?roomName="+name+"&"+"roomNumber="+number;
 	}
 
 	function createChattingRoom(res){

@@ -2,6 +2,7 @@ package chatting.chat.controller;
 
 import chatting.chat.vo.Room;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class MainController {
+public class ChatController {
     List<Room> roomList = new ArrayList<Room>();
     static int roomNumber = 0;
     @RequestMapping("/chat")
@@ -23,12 +24,6 @@ public class MainController {
         return mv;
     }
 
-    @RequestMapping("/fansRoom")
-    public ModelAndView fansRoom(){
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("fansRoom");
-        return mv;
-    }
     @RequestMapping("/room")
     public ModelAndView room(){
         ModelAndView mv = new ModelAndView();
@@ -69,20 +64,5 @@ public class MainController {
         }
         return mv;
     }
-    @RequestMapping("/adminChatting")
-    public ModelAndView fansChatting(@RequestParam HashMap<Object, Object> params) {
-        ModelAndView mv = new ModelAndView();
-        int roomNumber = Integer.parseInt((String) params.get("roomNumber"));
 
-        List<Room> new_list = roomList.stream().filter(o->o.getRoomNumber()==roomNumber).collect(Collectors.toList());
-        if(new_list != null && new_list.size() > 0) {
-            mv.addObject("roomName", params.get("roomName"));
-            mv.addObject("roomNumber", params.get("roomNumber"));
-            mv.setViewName("star");
-        }
-        else {
-            mv.setViewName("room");
-        }
-        return mv;
-    }
 }

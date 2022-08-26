@@ -19,12 +19,12 @@
 		.container h1{
 			text-align: left;
 			padding: 5px 5px 5px 15px;
-			color: #FFBB00;
-			border-left: 3px solid #FFBB00;
+			color: #fa7a8b;
+			border-left: 3px solid #fa7a8b;
 			margin-bottom: 20px;
 		}
 		.chats{
-			background-color: #000;
+			background-color: #89c2fa;
 			width: 500px;
 			height: 500px;
 			overflow: auto;
